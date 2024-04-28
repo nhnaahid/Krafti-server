@@ -27,6 +27,21 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
         // Send a ping to confirm a successful connection
+
+        const usersCollection = client.db('kraftiDB').collection('users');
+
+        app.get('/crafts', async (req, res) => {
+            const cursor = usersCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.post('/crafts', async (req, res) => {
+            const newCraft = req.body;
+            // console.log(newCraft);
+            const result = await usersCollection.insertOne(newCraft);
+            res.send(result);
+        })
+
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
