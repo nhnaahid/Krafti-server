@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        await client.connect();
+        // await client.connect();
 
         const usersCollection = client.db('kraftiDB').collection('users');
 
@@ -41,7 +41,6 @@ async function run() {
         })
         app.get('/my-crafts/:email', async (req, res) => {
             const email = req.params.email;
-            // console.log(email);
             const query = { userEmail: email };
             const result = await usersCollection.find(query).toArray();
             res.send(result);
