@@ -27,6 +27,7 @@ async function run() {
         // await client.connect();
 
         const usersCollection = client.db('kraftiDB').collection('users');
+        const categoriesCollection = client.db('kraftiDB').collection('categories');
 
         app.get('/crafts', async (req, res) => {
             const cursor = usersCollection.find();
@@ -37,6 +38,17 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await usersCollection.findOne(query);
+            res.send(result);
+        })
+        app.get('/categories', async (req, res) => {
+            const cursor = categoriesCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.get('/categories/:name', async (req, res) => {
+            const name = req.params.name;
+            const query = { subcategory_name: name };
+            const result = await usersCollection.find(query).toArray();
             res.send(result);
         })
         app.get('/my-crafts/:email', async (req, res) => {
